@@ -1,0 +1,10 @@
+framework:
+    validation:
+        enabled: true
+        # Enables validator discovery of constraints configured via PHP attributes.
+        enable_attributes: true
+
+when@test:
+    framework:
+        validation:
+            not_compromised_password: false
