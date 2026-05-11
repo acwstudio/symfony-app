@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Factory;
 
-use App\DTO\Input\StorePostInputDto;
+use App\DTO\Input\Post\StorePostInputDto;
 use App\Entity\Category;
 use App\Entity\Post;
-use App\Validator\PostValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 
@@ -24,7 +23,7 @@ final class PostFactory
     public function makePost(StorePostInputDto $storePostInputDto): Post
     {
         $category = $this->em->getReference(Category::class, $storePostInputDto->categoryId);
-        $post = new Post();
+        $post     = new Post();
 
         $post->setTitle($storePostInputDto->title);
         $post->setDescription($storePostInputDto->description);
@@ -42,15 +41,15 @@ final class PostFactory
      */
     public function makeStoreInputDTO(array $data): StorePostInputDto
     {
-        $category = $this->em->getRepository(Category::class)->find($data['category_id']);
+//        $category = $this->em->getRepository(Category::class)->find($data['category_id']);
         $post     = new StorePostInputDto();
 
-        $post->setTitle($data['title']);
-        $post->setDescription($data['description']);
-        $post->setContent($data['content']);
-        $post->setPublishedAt(new \DateTimeImmutable($data['published_at']));
-        $post->setStatus($data['status']);
-        $post->setCategory($category);
+        $post->title       = $data['title'];
+        $post->description = $data['description'];
+        $post->content     = $data['content'];
+        $post->publishedAt = new \DateTimeImmutable($data['published_at']);
+        $post->status      = $data['status'];
+        $post->categoryId  = $data['category_id'];
 
         return $post;
     }

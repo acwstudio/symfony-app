@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\DTO\Input\StorePostInputDto;
+use App\DTO\Input\Post\StorePostInputDto;
 use App\Entity\Post;
 use App\Factory\PostFactory;
 use App\Repository\PostRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 
 final class PostService

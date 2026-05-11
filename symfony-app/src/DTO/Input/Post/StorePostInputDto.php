@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\DTO\Input;
+namespace App\DTO\Input\Post;
 
-use App\Entity\Category;
+use App\DTO\Input\Assert;
 use Symfony\Component\Validator\Constraints\Length;
 
 final class StorePostInputDto
