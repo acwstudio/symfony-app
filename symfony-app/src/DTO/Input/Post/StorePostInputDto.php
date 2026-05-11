@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\DTO\Input\Post;
 
+use App\Entity\Category;
+use App\Validator\Constraint\EntityExists;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Length;
 
@@ -27,5 +29,6 @@ final class StorePostInputDto
     public ?int $status = 1;
 
     #[Assert\NotNull]
+    #[EntityExists(entity: Category::class)]
     public ?int $categoryId = null;
 }

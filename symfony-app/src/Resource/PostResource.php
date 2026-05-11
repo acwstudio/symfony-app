@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Resource;
 
 use App\DTO\Output\Post\PostOutputDto;
-use App\Entity\Post;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Validator;
+namespace App\DTOValidator;
 
 use App\DTO\Input\Post\StorePostInputDto;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class PostValidator
+final class PostDTOValidator
 {
     public function __construct(private ValidatorInterface $validator)
     {

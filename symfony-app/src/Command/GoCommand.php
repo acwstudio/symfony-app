@@ -2,10 +2,10 @@
 
 namespace App\Command;
 
+use App\DTOValidator\PostDTOValidator;
 use App\Factory\PostFactory;
 use App\ResponseBuilder\PostResponseBuilder;
 use App\Service\PostService;
-use App\Validator\PostValidator;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -23,7 +23,7 @@ class GoCommand extends Command
 {
     public function __construct(
         private PostService $postService,
-        private PostValidator $postValidator,
+        private PostDTOValidator $postValidator,
         private PostResponseBuilder $postResponseBuilder,
         private PostFactory $postFactory,
     )
