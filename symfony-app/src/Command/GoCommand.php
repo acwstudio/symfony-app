@@ -2,16 +2,11 @@
 
 namespace App\Command;
 
-use App\Entity\Category;
-use App\Entity\Post;
-use App\Entity\Tag;
 use App\Factory\PostFactory;
-use App\Resource\PostResource;
 use App\ResponseBuilder\PostResponseBuilder;
 use App\Service\PostService;
 use App\Validator\PostValidator;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,7 +14,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[AsCommand(
     name: 'go',
@@ -46,6 +40,7 @@ class GoCommand extends Command
 
     /**
      * @throws \DateMalformedStringException
+     * @throws ORMException
      * @throws ExceptionInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -59,31 +54,14 @@ class GoCommand extends Command
             'category_id'  => 1,
         ];
 
-//        $category = $this->em->getRepository(Category::class)->find($data['category_id']);
-
-
-//        $post = new Post();
-//
-//        $post->setTitle($data['title']);
-//        $post->setDescription($data['description']);
-//        $post->setContent($data['content']);
-//        $post->setPublishedAt(new \DateTimeImmutable($data['published_at']));
-//        $post->setStatus($data['status']);
-//        $post->setCategory($category);
-
         $storePostInputDTO = $this->postFactory->makeStoreInputDTO($data);
 
         $this->postValidator->validate($storePostInputDTO);
 
         $post = $this->postService->store($storePostInputDTO);
-        $post = $this->postResponseBuilder->storePostResponse($post);
-        dd($post);
-//
-//        $this->em->persist($post);
-//        $this->em->flush();
+        $res = $this->postResponseBuilder->storePostResponse($post);
+        dd($res);
 
-//        $posts = $this->postRepository->findAll();
-//        dd($posts);
         return Command::SUCCESS;
     }
 }

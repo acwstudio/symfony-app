@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO\Input\Post;
 
-use App\DTO\Input\Assert;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Length;
 
 final class StorePostInputDto

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Resource;
 
+use App\DTO\Output\Post\PostOutputDto;
 use App\Entity\Post;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -17,7 +18,7 @@ final class PostResource
     /**
      * @throws ExceptionInterface
      */
-    public function postItem(Post $post): string
+    public function postItem(PostOutputDto $post): string
     {
         return $this->serializer->serialize($post, 'json', ['groups' => ['post:item']]);
     }

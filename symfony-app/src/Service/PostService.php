@@ -17,7 +17,6 @@ final class PostService
     }
 
     /**
-     * @throws \DateMalformedStringException
      * @throws ORMException
      */
     public function store(StorePostInputDto $storePostInputDto): Post

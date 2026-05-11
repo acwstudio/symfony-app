@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Factory;
 
 use App\DTO\Input\Post\StorePostInputDto;
+use App\DTO\Output\Post\PostOutputDto;
 use App\Entity\Category;
 use App\Entity\Post;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +18,6 @@ final class PostFactory
     }
 
     /**
-     * @throws \DateMalformedStringException
      * @throws ORMException
      */
     public function makePost(StorePostInputDto $storePostInputDto): Post
@@ -28,7 +28,6 @@ final class PostFactory
         $post->setTitle($storePostInputDto->title);
         $post->setDescription($storePostInputDto->description);
         $post->setContent($storePostInputDto->content);
-//        $post->setPublishedAt(new \DateTimeImmutable($storePostInputDto->publishedAt));
         $post->setPublishedAt($storePostInputDto->publishedAt);
         $post->setStatus($storePostInputDto->status);
         $post->setCategory($category);
@@ -41,8 +40,7 @@ final class PostFactory
      */
     public function makeStoreInputDTO(array $data): StorePostInputDto
     {
-//        $category = $this->em->getRepository(Category::class)->find($data['category_id']);
-        $post     = new StorePostInputDto();
+        $post = new StorePostInputDto();
 
         $post->title       = $data['title'];
         $post->description = $data['description'];
@@ -52,5 +50,21 @@ final class PostFactory
         $post->categoryId  = $data['category_id'];
 
         return $post;
+    }
+
+    public function makePostOutputDTO(Post $post): PostOutputDto
+    {
+        $postOutputDTO = new PostOutputDto();
+
+        $postOutputDTO->id          = $post->getId();
+        $postOutputDTO->title       = $post->getTitle();
+        $postOutputDTO->description = $post->getDescription();
+        $postOutputDTO->content     = $post->getContent();
+        $postOutputDTO->publishedAt = $post->getPublishedAt();
+        $postOutputDTO->status      = $post->getStatus();
+        $postOutputDTO->category    = $post->getCategory();
+        $postOutputDTO->tags        = $post->getTags();
+
+        return $postOutputDTO;
     }
 }
