@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validator;
 
+use App\DTO\Input\StorePostInputDto;
 use App\Entity\Post;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -13,7 +14,7 @@ final class PostValidator
     {
     }
 
-    public function validate(Post $post): void
+    public function validate(StorePostInputDto $post): void
     {
         $errors = $this->validator->validate($post);
 

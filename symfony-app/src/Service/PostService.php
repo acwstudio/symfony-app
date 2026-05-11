@@ -4,18 +4,27 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\DTO\Input\StorePostInputDto;
 use App\Entity\Post;
+use App\Factory\PostFactory;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
 
 final class PostService
 {
-    public function __construct(private PostRepository $postRepository)
+    public function __construct(private PostRepository $postRepository, private PostFactory $postFactory)
     {
     }
 
-    public function store(Post $post): Post
+    /**
+     * @throws \DateMalformedStringException
+     * @throws ORMException
+     */
+    public function store(StorePostInputDto $storePostInputDto): Post
     {
+        $post = $this->postFactory->makePost($storePostInputDto);
+
         return $this->postRepository->store($post);
     }
 }

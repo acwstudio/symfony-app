@@ -71,11 +71,11 @@ class GoCommand extends Command
 //        $post->setStatus($data['status']);
 //        $post->setCategory($category);
 
-        $post = $this->postFactory->makePost($data);
+        $storePostInputDTO = $this->postFactory->makeStoreInputDTO($data);
 
-        $this->postValidator->validate($post);
+        $this->postValidator->validate($storePostInputDTO);
 
-        $post = $this->postService->store($post);
+        $post = $this->postService->store($storePostInputDTO);
         $post = $this->postResponseBuilder->storePostResponse($post);
         dd($post);
 //

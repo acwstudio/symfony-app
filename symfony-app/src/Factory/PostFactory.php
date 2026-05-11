@@ -9,6 +9,7 @@ use App\Entity\Category;
 use App\Entity\Post;
 use App\Validator\PostValidator;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
 
 final class PostFactory
 {
@@ -18,17 +19,19 @@ final class PostFactory
 
     /**
      * @throws \DateMalformedStringException
+     * @throws ORMException
      */
-    public function makePost(array $data): Post
+    public function makePost(StorePostInputDto $storePostInputDto): Post
     {
-        $category = $this->em->getRepository(Category::class)->find($data['category_id']);
+        $category = $this->em->getReference(Category::class, $storePostInputDto->categoryId);
         $post = new Post();
 
-        $post->setTitle($data['title']);
-        $post->setDescription($data['description']);
-        $post->setContent($data['content']);
-        $post->setPublishedAt(new \DateTimeImmutable($data['published_at']));
-        $post->setStatus($data['status']);
+        $post->setTitle($storePostInputDto->title);
+        $post->setDescription($storePostInputDto->description);
+        $post->setContent($storePostInputDto->content);
+//        $post->setPublishedAt(new \DateTimeImmutable($storePostInputDto->publishedAt));
+        $post->setPublishedAt($storePostInputDto->publishedAt);
+        $post->setStatus($storePostInputDto->status);
         $post->setCategory($category);
 
         return $post;
