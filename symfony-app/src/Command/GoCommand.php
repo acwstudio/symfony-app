@@ -5,7 +5,9 @@ namespace App\Command;
 use App\Entity\Category;
 use App\Entity\Post;
 use App\Entity\Tag;
+use App\Factory\PostFactory;
 use App\Resource\PostResource;
+use App\ResponseBuilder\PostResponseBuilder;
 use App\Service\PostService;
 use App\Validator\PostValidator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +18,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[AsCommand(
@@ -25,10 +28,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class GoCommand extends Command
 {
     public function __construct(
-        private EntityManagerInterface $em,
         private PostService $postService,
         private PostValidator $postValidator,
-        private PostResource $postResource,
+        private PostResponseBuilder $postResponseBuilder,
+        private PostFactory $postFactory,
     )
     {
         parent::__construct();
@@ -43,6 +46,7 @@ class GoCommand extends Command
 
     /**
      * @throws \DateMalformedStringException
+     * @throws ExceptionInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -51,28 +55,28 @@ class GoCommand extends Command
             'description'  => 'My second description edited',
             'content'      => 'My second post edited',
             'published_at' => '2020-12-23',
-            'status'       => '2',
-            'category_id'  => '1',
+            'status'       => 2,
+            'category_id'  => 1,
         ];
 
-        $category = $this->em->getRepository(Category::class)->find($data['category_id']);
+//        $category = $this->em->getRepository(Category::class)->find($data['category_id']);
 
-//        $post = $this->em->getRepository(Post::class)->find(2);
-//        $tag  = $this->em->getRepository(Tag::class)->find(1);
-//        $post->addTag($tag);
-        $post = new Post();
 
-        $post->setTitle($data['title']);
-        $post->setDescription($data['description']);
-        $post->setContent($data['content']);
-        $post->setPublishedAt(new \DateTimeImmutable($data['published_at']));
-        $post->setStatus($data['status']);
-        $post->setCategory($category);
+//        $post = new Post();
+//
+//        $post->setTitle($data['title']);
+//        $post->setDescription($data['description']);
+//        $post->setContent($data['content']);
+//        $post->setPublishedAt(new \DateTimeImmutable($data['published_at']));
+//        $post->setStatus($data['status']);
+//        $post->setCategory($category);
+
+        $post = $this->postFactory->makePost($data);
 
         $this->postValidator->validate($post);
 
         $post = $this->postService->store($post);
-        $post = $this->postResource->postItem($post);
+        $post = $this->postResponseBuilder->storePostResponse($post);
         dd($post);
 //
 //        $this->em->persist($post);
