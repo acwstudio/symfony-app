@@ -9,3 +9,8 @@
 
 controllers:
     resource: routing.controllers
+
+#yaml_posts:
+#    path: /posts
+#    controller: App\Controller\PostController::index
+#    methods: [GET]

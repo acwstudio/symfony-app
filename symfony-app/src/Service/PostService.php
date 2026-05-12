@@ -16,6 +16,11 @@ final class PostService
     {
     }
 
+    public function index(): array
+    {
+        return $this->postRepository->findAll();
+    }
+
     /**
      * @throws ORMException
      */

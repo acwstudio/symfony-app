@@ -45,22 +45,22 @@ class GoCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $data = [
-            'title'        => 'My second title edited',
-            'description'  => 'My second description edited',
-            'content'      => 'My second post edited',
-            'published_at' => '2020-12-23',
-            'status'       => 2,
-            'category_id'  => 1,
-        ];
-
-        $storePostInputDTO = $this->postFactory->makeStoreInputDTO($data);
-
-        $this->postValidator->validate($storePostInputDTO);
-
-        $post = $this->postService->store($storePostInputDTO);
-        $res = $this->postResponseBuilder->storePostResponse($post);
-        dd($res);
+//        $data = [
+//            'title'        => 'My second title edited',
+//            'description'  => 'My second description edited',
+//            'content'      => 'My second post edited',
+//            'published_at' => '2020-12-23',
+//            'status'       => 2,
+//            'category_id'  => 1,
+//        ];
+//
+//        $storePostInputDTO = $this->postFactory->makeStorePostInputDTO($data);
+//
+//        $this->postValidator->validate($storePostInputDTO);
+//
+//        $post = $this->postService->store($storePostInputDTO);
+//        $res = $this->postResponseBuilder->storePostResponse($post);
+//        dd($res);
 
         return Command::SUCCESS;
     }

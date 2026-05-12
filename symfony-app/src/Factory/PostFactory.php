@@ -38,16 +38,16 @@ final class PostFactory
     /**
      * @throws \DateMalformedStringException
      */
-    public function makeStoreInputDTO(array $data): StorePostInputDto
+    public function makeStorePostInputDTO(array $data): StorePostInputDto
     {
         $post = new StorePostInputDto();
 
-        $post->title       = $data['title'];
-        $post->description = $data['description'];
-        $post->content     = $data['content'];
-        $post->publishedAt = new \DateTimeImmutable($data['published_at']);
-        $post->status      = $data['status'];
-        $post->categoryId  = $data['category_id'];
+        $post->title       = $data['title'] ?? null;
+        $post->description = $data['description'] ?? null;
+        $post->content     = $data['content'] ?? null;
+        $post->publishedAt = new \DateTimeImmutable($data['published_at']) ?? null;
+        $post->status      = $data['status'] ?? null;
+        $post->categoryId  = $data['category_id'] ?? null;
 
         return $post;
     }
@@ -66,5 +66,10 @@ final class PostFactory
         $postOutputDTO->tags        = $post->getTags();
 
         return $postOutputDTO;
+    }
+
+    public function makePostOutputDTOs(array $posts): array
+    {
+        return array_map(fn (Post $post) => $this->makePostOutputDTO($post), $posts);
     }
 }
