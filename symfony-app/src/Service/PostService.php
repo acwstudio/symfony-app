@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\DTO\Input\Post\StorePostInputDto;
+use App\DTO\Input\Post\UpdatePostInputDto;
 use App\Entity\Post;
 use App\Factory\PostFactory;
 use App\Repository\PostRepository;
@@ -29,5 +30,12 @@ final class PostService
         $post = $this->postFactory->makePost($storePostInputDto);
 
         return $this->postRepository->store($post);
+    }
+
+    public function update(Post $post, UpdatePostInputDto $updatePostInputDto): Post
+    {
+        $post = $this->postFactory->editPost($post, $updatePostInputDto);
+
+        return $this->postRepository->update($post);
     }
 }

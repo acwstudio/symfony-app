@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\DTOValidator\PostDTOValidator;
+use App\DTOValidator\StorePostDTOValidator;
 use App\Factory\PostFactory;
 use App\ResponseBuilder\PostResponseBuilder;
 use App\Service\PostService;
@@ -23,7 +23,7 @@ class GoCommand extends Command
 {
     public function __construct(
         private PostService $postService,
-        private PostDTOValidator $postValidator,
+        private StorePostDTOValidator $postValidator,
         private PostResponseBuilder $postResponseBuilder,
         private PostFactory $postFactory,
     )

@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\DTOValidator\PostDTOValidator;
+use App\DTOValidator\StorePostDTOValidator;
+use App\DTOValidator\UpdatePostDTOValidator;
 use App\Entity\Post;
 use App\Factory\PostFactory;
 use App\ResponseBuilder\PostResponseBuilder;
@@ -19,7 +20,8 @@ final class PostController extends AbstractController
     public function __construct(
         private PostService $postService,
         private PostResponseBuilder $postResponseBuilder,
-        private PostDTOValidator $postDTOValidator,
+        private StorePostDTOValidator $storePostDTOValidator,
+        private UpdatePostDTOValidator $updatePostDTOValidator,
         private PostFactory $postFactory,
     )
     {
@@ -50,9 +52,21 @@ final class PostController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $storePostInputDTO = $this->postFactory->makeStorePostInputDTO($data);
-        $this->postDTOValidator->validate($storePostInputDTO);
+        $this->storePostDTOValidator->validate($storePostInputDTO);
         $post = $this->postService->store($storePostInputDTO);
 
         return $this->postResponseBuilder->storePostResponse($post);
+    }
+
+    #[Route('api/posts/{id}', name: 'post.update', methods: ['PATCH'])]
+    public function update(Post $post, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $updatePostInputDTO = $this->postFactory->makeUpdatePostInputDTO($data);
+        $this->updatePostDTOValidator->validate($updatePostInputDTO);
+        $post = $this->postService->update($post, $updatePostInputDTO);
+
+        return $this->postResponseBuilder->updatePostResponse($post);
     }
 }

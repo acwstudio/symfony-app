@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Factory;
 
 use App\DTO\Input\Post\StorePostInputDto;
+use App\DTO\Input\Post\UpdatePostInputDto;
 use App\DTO\Output\Post\PostOutputDto;
 use App\Entity\Category;
 use App\Entity\Post;
@@ -35,12 +36,40 @@ final class PostFactory
         return $post;
     }
 
+    public function editPost(Post $post, UpdatePostInputDto $updatePostInputDto): Post
+    {
+        $category = $this->em->getReference(Category::class, $updatePostInputDto->categoryId);
+
+        $post->setTitle($updatePostInputDto->title);
+        $post->setDescription($updatePostInputDto->description);
+        $post->setContent($updatePostInputDto->content);
+        $post->setPublishedAt($updatePostInputDto->publishedAt);
+        $post->setStatus($updatePostInputDto->status);
+        $post->setCategory($category);
+
+        return $post;
+    }
+
     /**
      * @throws \DateMalformedStringException
      */
     public function makeStorePostInputDTO(array $data): StorePostInputDto
     {
         $post = new StorePostInputDto();
+
+        $post->title       = $data['title'] ?? null;
+        $post->description = $data['description'] ?? null;
+        $post->content     = $data['content'] ?? null;
+        $post->publishedAt = new \DateTimeImmutable($data['published_at']) ?? null;
+        $post->status      = $data['status'] ?? null;
+        $post->categoryId  = $data['category_id'] ?? null;
+
+        return $post;
+    }
+
+    public function makeUpdatePostInputDTO(array $data): UpdatePostInputDto
+    {
+        $post = new UpdatePostInputDto();
 
         $post->title       = $data['title'] ?? null;
         $post->description = $data['description'] ?? null;
