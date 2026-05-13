@@ -54,4 +54,9 @@ final class PostResponseBuilder
 
         return new JsonResponse($postResource, $status, $headers, $isJson);
     }
+
+    public function destroyPostResponse($status = 204, $headers = []): JsonResponse
+    {
+        return new JsonResponse(null, $status, $headers,);
+    }
 }

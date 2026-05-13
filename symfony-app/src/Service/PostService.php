@@ -38,4 +38,9 @@ final class PostService
 
         return $this->postRepository->update($post);
     }
+
+    public function destroy(Post $post): void
+    {
+        $this->postRepository->destroy($post);
+    }
 }

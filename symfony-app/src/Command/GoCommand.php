@@ -3,9 +3,11 @@
 namespace App\Command;
 
 use App\DTOValidator\StorePostDTOValidator;
+use App\Entity\User;
 use App\Factory\PostFactory;
 use App\ResponseBuilder\PostResponseBuilder;
 use App\Service\PostService;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -13,6 +15,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 #[AsCommand(
@@ -22,10 +25,12 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 class GoCommand extends Command
 {
     public function __construct(
+        private EntityManagerInterface $em,
         private PostService $postService,
         private StorePostDTOValidator $postValidator,
         private PostResponseBuilder $postResponseBuilder,
         private PostFactory $postFactory,
+        private UserPasswordHasherInterface $passwordHasher,
     )
     {
         parent::__construct();
@@ -45,6 +50,18 @@ class GoCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+
+        $data = [
+            'email' => 'user@mail.ru',
+            'password' => 'password',
+        ];
+        $user = new User();
+        $user->setEmail($data['email']);
+        $user->setPassword($this->passwordHasher->hashPassword($user, $data['password']));
+
+        $this->em->persist($user);
+        $this->em->flush();
+
 //        $data = [
 //            'title'        => 'My second title edited',
 //            'description'  => 'My second description edited',
