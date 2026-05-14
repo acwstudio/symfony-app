@@ -7,6 +7,7 @@ use App\Entity\Post;
 use App\Entity\User;
 use App\Event\Post\PostCreatedEvent;
 use App\Factory\PostFactory;
+use App\Message\SomeMessage;
 use App\ResponseBuilder\PostResponseBuilder;
 use App\Service\PostService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
@@ -35,6 +37,7 @@ class GoCommand extends Command
         private PostFactory $postFactory,
         private UserPasswordHasherInterface $passwordHasher,
         private EventDispatcherInterface $eventDispatcher,
+        private MessageBusInterface $messageBus,
     )
     {
         parent::__construct();
@@ -54,12 +57,14 @@ class GoCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $post = $this->em->getRepository(Post::class)->find(5);
-        $post->setTitle(1111999999999999991111);
-        $this->em->persist($post);
-        $this->em->flush();
+        $this->messageBus->dispatch(new SomeMessage('hello'));
 
-        $this->eventDispatcher->dispatch(new PostCreatedEvent($post), PostCreatedEvent::NAME);
+//        $post = $this->em->getRepository(Post::class)->find(5);
+//        $post->setTitle(1111999999999999991111);
+//        $this->em->persist($post);
+//        $this->em->flush();
+//
+//        $this->eventDispatcher->dispatch(new PostCreatedEvent($post), PostCreatedEvent::NAME);
 
 //        $data = [
 //            'email' => 'user@mail.ru',
