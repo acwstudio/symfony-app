@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\DTOValidator\StorePostDTOValidator;
+use App\Entity\Post;
 use App\Entity\User;
 use App\Factory\PostFactory;
 use App\ResponseBuilder\PostResponseBuilder;
@@ -50,17 +51,21 @@ class GoCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
-        $data = [
-            'email' => 'user@mail.ru',
-            'password' => 'password',
-        ];
-        $user = new User();
-        $user->setEmail($data['email']);
-        $user->setPassword($this->passwordHasher->hashPassword($user, $data['password']));
-
-        $this->em->persist($user);
+        $post = $this->em->getRepository(Post::class)->find(5);
+        $post->setTitle(1111999999999999991111);
+        $this->em->persist($post);
         $this->em->flush();
+
+//        $data = [
+//            'email' => 'user@mail.ru',
+//            'password' => 'password',
+//        ];
+//        $user = new User();
+//        $user->setEmail($data['email']);
+//        $user->setPassword($this->passwordHasher->hashPassword($user, $data['password']));
+//
+//        $this->em->persist($user);
+//        $this->em->flush();
 
 //        $data = [
 //            'title'        => 'My second title edited',
