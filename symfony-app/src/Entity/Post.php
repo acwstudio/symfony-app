@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\EntityListeners(['App\Listener\Entity\PostListener'])]
+//#[ORM\EntityListeners(['App\Listener\Entity\PostListener'])]
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
 {
